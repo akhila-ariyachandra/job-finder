@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { db } from "../db/index.js";
 import { postingsTable } from "../db/schema.js";
 import { validator } from "hono/validator";
-import { object, z } from "zod";
+import { z } from "zod";
 import { HTTPException } from "hono/http-exception";
 
 const postings = new Hono();
@@ -26,7 +26,7 @@ const postBodySchema = z.object({
 
 postings.post(
   "/",
-  validator("json", async (data, c) => {
+  validator("json", async (data) => {
     try {
       const parsedResponse = await postBodySchema.parseAsync(data);
 

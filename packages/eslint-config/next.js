@@ -6,8 +6,11 @@ const project = resolve(process.cwd(), "tsconfig.json");
 module.exports = {
   extends: [
     "eslint:recommended",
+    "plugin:@typescript-eslint/strict-type-checked",
+    "plugin:@typescript-eslint/stylistic-type-checked",
+    "plugin:@eslint-react/recommended-type-checked-legacy",
+    "next/core-web-vitals",
     "prettier",
-    require.resolve("@vercel/style-guide/eslint/next"),
     "turbo",
   ],
   globals: {
@@ -18,7 +21,14 @@ module.exports = {
     node: true,
     browser: true,
   },
-  plugins: ["only-warn"],
+  plugins: ["react-compiler"],
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    project,
+  },
+  rules: {
+    "react-compiler/react-compiler": "error",
+  },
   settings: {
     "import/resolver": {
       typescript: {
@@ -28,8 +38,16 @@ module.exports = {
   },
   ignorePatterns: [
     // Ignore dotfiles
-    ".*.js",
     "node_modules/",
   ],
-  overrides: [{ files: ["*.js?(x)", "*.ts?(x)"] }],
+  overrides: [
+    {
+      // https://typescript-eslint.io/getting-started/typed-linting/#how-can-i-disable-type-aware-linting-for-a-subset-of-files
+      files: ["*.js?(x)"],
+      extends: [
+        "plugin:@typescript-eslint/disable-type-checked",
+        "plugin:@eslint-react/disable-type-checked-legacy",
+      ],
+    },
+  ],
 };

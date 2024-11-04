@@ -11,7 +11,7 @@ app.get("/", (c) => {
 app.route("/postings", postings);
 
 const port = 3000;
-console.log(`Server is running on http://localhost:${port}`);
+console.log(`Server is running on http://localhost:${port.toString()}`);
 
 serve({
   fetch: app.fetch,
