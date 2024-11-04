@@ -1,0 +1,25 @@
+{
+  "name": "server",
+  "type": "module",
+  "types": "./src/index.ts",
+  "scripts": {
+    "dev": "dotenv -c -- tsx watch src/index.ts",
+    "db:push": "dotenv -c -- drizzle-kit push",
+    "db:generate": "dotenv -c -- drizzle-kit generate",
+    "db:migrate": "dotenv -c -- drizzle-kit migrate"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.4",
+    "@libsql/client": "^0.14.0",
+    "drizzle-orm": "^0.36.0",
+    "hono": "^4.6.8",
+    "nanoid": "^5.0.8",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.17",
+    "dotenv-cli": "^7.4.2",
+    "drizzle-kit": "^0.27.1",
+    "tsx": "^4.19.2"
+  }
+}
