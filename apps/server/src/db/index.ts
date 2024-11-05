@@ -1,4 +1,7 @@
-import { drizzle } from "drizzle-orm/libsql";
+import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-export const db = drizzle(process.env.DB_FILE_NAME!);
+const sql = neon(process.env.DATABASE_URL!);
+
+export const db = drizzle(sql);
