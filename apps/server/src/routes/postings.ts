@@ -1,9 +1,9 @@
 import { Hono } from "hono";
-import { db } from "../db/index.js";
-import { postingsTable } from "../db/schema.js";
+import { HTTPException } from "hono/http-exception";
 import { validator } from "hono/validator";
 import { z } from "zod";
-import { HTTPException } from "hono/http-exception";
+import { db } from "../db/index.js";
+import { postingsTable } from "../db/schema.js";
 
 const postings = new Hono();
 
@@ -51,7 +51,7 @@ postings.post(
       .returning({ id: postingsTable.id });
 
     return c.text(response[0].id);
-  }
+  },
 );
 
 export default postings;

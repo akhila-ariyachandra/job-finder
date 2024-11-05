@@ -1,6 +1,6 @@
+import { sql } from "drizzle-orm";
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { nanoid } from "nanoid";
-import { sql } from "drizzle-orm";
 
 export const postingsTable = sqliteTable("posting", {
   id: text()
