@@ -10,7 +10,7 @@ app.get("/", (c) => {
 
 app.route("/postings", postings);
 
-const port = 3000;
+const port = 4000;
 // eslint-disable-next-line no-console
 console.log(`Server is running on http://localhost:${port.toString()}`);
 
