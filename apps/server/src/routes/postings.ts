@@ -50,7 +50,7 @@ postings.post(
       })
       .returning({ id: postingsTable.id });
 
-    return c.text(response[0].id);
+    return c.json(response[0]);
   },
 );
 
