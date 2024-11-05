@@ -14,12 +14,21 @@ module.exports = {
     "eslint:recommended",
     "plugin:@typescript-eslint/strict-type-checked",
     "plugin:@typescript-eslint/stylistic-type-checked",
-    "plugin:react/recommended",
     "plugin:@eslint-react/recommended-type-checked-legacy",
+    "plugin:import/typescript",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:@tanstack/query/recommended",
+    "plugin:jsx-a11y/strict",
     "prettier",
     "turbo",
   ],
-  plugins: ["react-compiler"],
+  plugins: [
+    "react-compiler",
+    "@stylistic/js",
+    "prefer-arrow-functions",
+    "import",
+  ],
   globals: {
     React: true,
     JSX: true,
@@ -45,6 +54,46 @@ module.exports = {
   ],
   rules: {
     "react-compiler/react-compiler": "error",
+    "@typescript-eslint/consistent-type-imports": "error",
+    "@eslint-react/no-useless-fragment": "error",
+    "@eslint-react/prefer-read-only-props": "error",
+    "react/function-component-definition": [
+      "error",
+      {
+        namedComponents: "arrow-function",
+        unnamedComponents: "arrow-function",
+      },
+    ],
+    "react/self-closing-comp": [
+      "error",
+      {
+        component: true,
+        html: true,
+      },
+    ],
+    "react/jsx-pascal-case": "error",
+    "prefer-arrow-functions/prefer-arrow-functions": [
+      "error",
+      { allowNamedFunctions: true },
+    ],
+    curly: ["error", "all"],
+    "import/newline-after-import": "error",
+    "react-hooks/exhaustive-deps": "error",
+    "@eslint-react/prefer-read-only-props": "error",
+    "@eslint-react/no-leaked-conditional-rendering": "error",
+    "@stylistic/js/padding-line-between-statements": [
+      "error",
+      { blankLine: "always", prev: "*", next: "return" },
+      { blankLine: "always", prev: "directive", next: "*" },
+      { blankLine: "never", prev: "directive", next: "directive" },
+    ],
+    "no-console": "error",
+    "@typescript-eslint/prefer-nullish-coalescing": [
+      "error",
+      { ignoreConditionalTests: true },
+    ],
+    "@eslint-react/hooks-extra/no-direct-set-state-in-use-effect": "error",
+    "@eslint-react/hooks-extra/no-redundant-custom-hook": "error",
   },
   overrides: [
     {
