@@ -1,17 +1,7 @@
+import { buttonVariants } from "@/_components/ui/button";
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import Link from "next/link";
 import "./globals.css";
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,10 +15,29 @@ const RootLayout = ({
 }>) => {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className="antialiased">
+        <header className="p-4 shadow">
+          <div className="container flex flex-row items-center justify-between">
+            <Link href="/" className="text-2xl font-bold">
+              Job Finder
+            </Link>
+
+            <nav className="flex flex-row items-center gap-4">
+              <Link
+                href="/sign-in"
+                className={buttonVariants({ variant: "outline" })}
+              >
+                Sign In
+              </Link>
+
+              <Link href="/vacancy/new" className={buttonVariants()}>
+                Post Vacancy
+              </Link>
+            </nav>
+          </div>
+        </header>
+
+        <main>{children}</main>
       </body>
     </html>
   );
