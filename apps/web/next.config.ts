@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
     ppr: true,
     dynamicIO: true,
   },
+  eslint: {
+    dirs: ["app"],
+  },
 };
 
 export default nextConfig;

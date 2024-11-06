@@ -65,10 +65,7 @@ module.exports = {
       },
     ],
     "react/jsx-pascal-case": "error",
-    "prefer-arrow-functions/prefer-arrow-functions": [
-      "error",
-      { allowNamedFunctions: true },
-    ],
+    "prefer-arrow-functions/prefer-arrow-functions": "error",
     curly: ["error", "all"],
     "import/newline-after-import": "error",
     "react-hooks/exhaustive-deps": "error",
@@ -87,6 +84,12 @@ module.exports = {
     ],
     "@eslint-react/hooks-extra/no-direct-set-state-in-use-effect": "error",
     "@eslint-react/hooks-extra/no-redundant-custom-hook": "error",
+    "@eslint-react/naming-convention/filename": [
+      "error",
+      {
+        rule: "kebab-case",
+      },
+    ],
   },
   overrides: [
     {

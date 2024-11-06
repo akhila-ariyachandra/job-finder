@@ -38,10 +38,7 @@ module.exports = {
   ],
   rules: {
     "@typescript-eslint/consistent-type-imports": "error",
-    "prefer-arrow-functions/prefer-arrow-functions": [
-      "error",
-      { allowNamedFunctions: true },
-    ],
+    "prefer-arrow-functions/prefer-arrow-functions": "error",
     curly: ["error", "all"],
     "import/newline-after-import": "error",
     "@stylistic/js/padding-line-between-statements": [
