@@ -7,5 +7,7 @@
       "mode": "auto"
     }
   ],
-  "eslint.lintTask.options": "--cache"
+  "eslint.lintTask.options": "--cache",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true
 }
