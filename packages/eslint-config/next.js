@@ -49,7 +49,6 @@ module.exports = {
     "react-compiler/react-compiler": "error",
     "@typescript-eslint/consistent-type-imports": "error",
     "@eslint-react/no-useless-fragment": "error",
-    "@eslint-react/prefer-read-only-props": "error",
     "react/function-component-definition": [
       "error",
       {
@@ -69,7 +68,6 @@ module.exports = {
     curly: ["error", "all"],
     "import/newline-after-import": "error",
     "react-hooks/exhaustive-deps": "error",
-    "@eslint-react/prefer-read-only-props": "error",
     "@eslint-react/no-leaked-conditional-rendering": "error",
     "@stylistic/js/padding-line-between-statements": [
       "error",
@@ -90,6 +88,8 @@ module.exports = {
         rule: "kebab-case",
       },
     ],
+    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/consistent-type-definitions": ["error", "type"],
   },
   overrides: [
     {

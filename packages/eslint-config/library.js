@@ -52,6 +52,7 @@ module.exports = {
       "error",
       { ignoreConditionalTests: true },
     ],
+    "@typescript-eslint/consistent-type-definitions": ["error", "type"],
   },
   overrides: [
     {
