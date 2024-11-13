@@ -7,6 +7,7 @@
     "db:push": "dotenv -c -- drizzle-kit push",
     "db:generate": "dotenv -c -- drizzle-kit generate",
     "db:migrate": "dotenv -c -- drizzle-kit migrate",
+    "types": "tsc --noEmit",
     "lint": "eslint . --max-warnings=0"
   },
   "dependencies": {

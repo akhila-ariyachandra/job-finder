@@ -1,12 +1,14 @@
 import { clerkMiddleware } from "@hono/clerk-auth";
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
+import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import postings from "./routes/postings.js";
 import webhooks from "./routes/webhooks.js";
 
 const app = new Hono()
   .use("*", logger())
+  .use("*", cors())
   .use("*", clerkMiddleware())
   .get("/", (c) => {
     return c.text("Hello Hono!");

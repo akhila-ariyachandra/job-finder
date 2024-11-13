@@ -36,8 +36,8 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
                     </Link>
                   </SignedOut>
 
-                  <Link href="/vacancy/new" className={buttonVariants()}>
-                    Post Vacancy
+                  <Link href="/job/new" className={buttonVariants()}>
+                    Post Job
                   </Link>
                 </nav>
               </div>

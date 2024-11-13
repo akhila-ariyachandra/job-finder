@@ -1,8 +1,11 @@
+import { getAuth } from "@hono/clerk-auth";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
+import { HTTPException } from "hono/http-exception";
 import { z } from "zod";
 import { db } from "../db/index.js";
 import { postingsTable } from "../db/schema.js";
+import { authorizationHeaderSchema } from "../lib/helpers.js";
 
 const postings = new Hono()
   .get("/", async (c) => {
@@ -12,6 +15,12 @@ const postings = new Hono()
   })
   .post(
     "/",
+    zValidator(
+      "header",
+      z.object({
+        authorization: authorizationHeaderSchema,
+      }),
+    ),
     zValidator(
       "json",
       z.object({
@@ -26,11 +35,18 @@ const postings = new Hono()
       }),
     ),
     async (c) => {
+      const auth = getAuth(c);
+
+      if (!auth?.userId) {
+        throw new HTTPException(401);
+      }
+
       const { title, description, salary } = c.req.valid("json");
 
       const response = await db
         .insert(postingsTable)
         .values({
+          userId: auth.userId,
           title,
           description,
           minSalary: salary?.min,
