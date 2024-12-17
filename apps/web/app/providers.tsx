@@ -2,6 +2,7 @@
 
 import {
   isServer,
+  MutationCache,
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
@@ -9,8 +10,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
 import { type ReactNode } from "react";
 
-const makeQueryClient = () =>
-  new QueryClient({
+const makeQueryClient = () => {
+  const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
         // With SSR, we usually want to set some default staleTime
@@ -18,7 +19,15 @@ const makeQueryClient = () =>
         staleTime: 60 * 1000,
       },
     },
+    mutationCache: new MutationCache({
+      onSuccess: () => {
+        queryClient.invalidateQueries();
+      },
+    }),
   });
+
+  return queryClient;
+};
 
 let browserQueryClient: QueryClient | undefined = undefined;
 

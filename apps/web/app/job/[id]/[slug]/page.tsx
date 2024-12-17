@@ -1,3 +1,4 @@
+import SaveJobButton from "@/_components/save-job-button";
 import { client } from "@/_lib/api";
 import { notFound } from "next/navigation";
 
@@ -27,6 +28,10 @@ const JobPostingPage = async ({
 
   return (
     <>
+      <div>
+        <SaveJobButton postingId={id} />
+      </div>
+
       <h1>{job.title}</h1>
 
       {/* eslint-disable-next-line @eslint-react/dom/no-dangerously-set-innerhtml */}

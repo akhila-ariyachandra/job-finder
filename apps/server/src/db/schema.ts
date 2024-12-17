@@ -34,7 +34,9 @@ export const savedJobsTable = pgTable(
   "saved_job",
   {
     userId: text().notNull(),
-    postingId: text().references(() => postingsTable.id),
+    postingId: text()
+      .references(() => postingsTable.id)
+      .notNull(),
   },
   (table) => {
     return {

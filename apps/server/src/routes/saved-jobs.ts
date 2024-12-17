@@ -9,27 +9,36 @@ import { savedJobsTable } from "../db/schema.js";
 import { authorizationHeaderSchema } from "../lib/helpers.js";
 
 const savedJobs = new Hono()
-  .get("/", async (c) => {
-    const auth = getAuth(c);
+  .get(
+    "/",
+    zValidator(
+      "header",
+      z.object({
+        authorization: authorizationHeaderSchema.optional(),
+      }),
+    ),
+    async (c) => {
+      const auth = getAuth(c);
 
-    if (!auth?.userId) {
-      return c.json([]);
-    }
+      if (!auth?.userId) {
+        return c.json([]);
+      }
 
-    const results = await db.query.savedJobsTable.findMany({
-      columns: {
-        postingId: true,
-      },
-    });
+      const results = await db.query.savedJobsTable.findMany({
+        columns: {
+          postingId: true,
+        },
+      });
 
-    return c.json(results.map((result) => result.postingId));
-  })
+      return c.json(results.map((result) => result.postingId));
+    },
+  )
   .post(
     "/:postingId",
     zValidator(
       "header",
       z.object({
-        authorization: authorizationHeaderSchema,
+        authorization: authorizationHeaderSchema.optional(),
       }),
     ),
     zValidator(
@@ -81,7 +90,7 @@ const savedJobs = new Hono()
     zValidator(
       "header",
       z.object({
-        authorization: authorizationHeaderSchema,
+        authorization: authorizationHeaderSchema.optional(),
       }),
     ),
     zValidator(

@@ -15,7 +15,7 @@ const app = new Hono()
     return c.text("Hello Hono!");
   })
   .route("/postings", postings)
-  .route("/save-jobs", savedJobs)
+  .route("/saved-jobs", savedJobs)
   .route("/webhooks", webhooks);
 
 const port = 4000;
