@@ -1,3 +1,4 @@
+import slugify from "slugify";
 import { z } from "zod";
 
 export const authorizationHeaderSchema = z.custom<`Bearer ${string}`>((val) => {
@@ -9,3 +10,14 @@ export const authorizationHeaderSchema = z.custom<`Bearer ${string}`>((val) => {
 
   return false;
 });
+
+export const getSlug = (value: string): string => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  return slugify(value, {
+    lower: true,
+    strict: true,
+    trim: true,
+  });
+};

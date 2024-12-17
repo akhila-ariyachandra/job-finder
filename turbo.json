@@ -4,12 +4,12 @@
   "globalEnv": ["DATABASE_URL", "WEBHOOK_SECRET", "CLERK_SECRET_KEY"],
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "typecheck", "lint"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
-    "types": {
-      "dependsOn": ["^types"]
+    "typecheck": {
+      "dependsOn": ["^typecheck"]
     },
     "lint": {
       "dependsOn": ["^lint"]

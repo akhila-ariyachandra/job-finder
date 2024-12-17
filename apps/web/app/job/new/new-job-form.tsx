@@ -23,6 +23,7 @@ import Text from "@tiptap/extension-text";
 import Underline from "@tiptap/extension-underline";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { Bold as BoldIcon, ItalicIcon, UnderlineIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useId } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
@@ -39,6 +40,7 @@ const NewJobForm = ({ token }: { token: string }) => {
   "use no memo";
 
   const id = useId();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -66,14 +68,14 @@ const NewJobForm = ({ token }: { token: string }) => {
   });
 
   const createJobMutation = useMutation({
-    mutationFn: ({
+    mutationFn: async ({
       title,
       description,
     }: {
       title: string;
       description: string;
-    }) =>
-      client.postings.$post({
+    }) => {
+      const response = await client.postings.$post({
         header: {
           authorization: `Bearer ${token}`,
         },
@@ -81,7 +83,13 @@ const NewJobForm = ({ token }: { token: string }) => {
           title,
           description,
         },
-      }),
+      });
+
+      return await response.json();
+    },
+    onSuccess: (data) => {
+      router.replace(`/job/${data.id}/${data.slug}`);
+    },
   });
 
   const onSubmit = form.handleSubmit((data) => {

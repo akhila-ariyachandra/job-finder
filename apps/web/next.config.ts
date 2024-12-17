@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   experimental: {
     reactCompiler: true,
-    ppr: true,
+    // ppr: true,
     // dynamicIO: true,
   },
   eslint: {

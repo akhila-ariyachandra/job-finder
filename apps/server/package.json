@@ -7,8 +7,11 @@
     "db:push": "dotenv -c -- drizzle-kit push",
     "db:generate": "dotenv -c -- drizzle-kit generate",
     "db:migrate": "dotenv -c -- drizzle-kit migrate",
-    "types": "tsc --noEmit",
-    "lint": "eslint . --max-warnings=0"
+    "db:studio": "dotenv -c -- drizzle-kit studio",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --max-warnings=0",
+    "build": "tsc",
+    "start": "dotenv -c -- node ./dist/src/index.js"
   },
   "dependencies": {
     "@clerk/backend": "^1.16.0",
@@ -16,8 +19,11 @@
     "@hono/node-server": "^1.13.4",
     "@hono/zod-validator": "^0.4.1",
     "@neondatabase/serverless": "^0.10.2",
+    "@paralleldrive/cuid2": "^2.2.2",
     "drizzle-orm": "^0.36.0",
     "hono": "^4.6.8",
+    "sanitize-html": "^2.13.1",
+    "slugify": "^1.6.6",
     "svix": "^1.39.0",
     "unique-names-generator": "^4.7.1",
     "zod": "^3.23.8"
@@ -25,8 +31,10 @@
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@types/node": "^20.11.17",
+    "@types/sanitize-html": "^2.13.0",
     "dotenv-cli": "^7.4.2",
     "drizzle-kit": "^0.27.1",
+    "eslint": "8.57.0",
     "tsx": "^4.19.2"
   }
 }

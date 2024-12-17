@@ -4,10 +4,15 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
-    "types": "turbo types",
+    "typecheck": "turbo typecheck",
     "lint": "turbo lint",
     "prettier:format": "prettier --write \"**/*.{js,jsx,ts,tsx,md,json,yaml}\" --cache --cache-location=.prettier/cache",
     "prettier:check": "prettier --check \"**/*.{js,jsx,ts,tsx,md,json,yaml}\" --cache --cache-location=.prettier/cache"
+  },
+  "pnpm": {
+    "overrides": {
+      "eslint": "8.57.0"
+    }
   },
   "devDependencies": {
     "@repo/prettier-config": "workspace:*",

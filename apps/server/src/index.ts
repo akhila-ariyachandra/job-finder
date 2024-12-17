@@ -4,6 +4,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import postings from "./routes/postings.js";
+import savedJobs from "./routes/saved-jobs.js";
 import webhooks from "./routes/webhooks.js";
 
 const app = new Hono()
@@ -14,6 +15,7 @@ const app = new Hono()
     return c.text("Hello Hono!");
   })
   .route("/postings", postings)
+  .route("/save-jobs", savedJobs)
   .route("/webhooks", webhooks);
 
 const port = 4000;
