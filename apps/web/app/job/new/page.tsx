@@ -1,3 +1,4 @@
+import { LONG_JWT_TEMPLATE } from "@/_lib/constants";
 import { auth } from "@clerk/nextjs/server";
 import type { Metadata } from "next";
 import NewJobForm from "./new-job-form";
@@ -9,7 +10,9 @@ export const metadata: Metadata = {
 const NewJobPage = async () => {
   const { getToken, redirectToSignIn } = await auth();
 
-  const token = await getToken();
+  const token = await getToken({
+    template: LONG_JWT_TEMPLATE,
+  });
 
   if (!token) {
     return redirectToSignIn();
