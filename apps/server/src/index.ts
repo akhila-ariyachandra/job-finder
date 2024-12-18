@@ -18,7 +18,7 @@ const app = new Hono()
   .route("/saved-jobs", savedJobs)
   .route("/webhooks", webhooks);
 
-const port = 4000;
+const port = !isNaN(Number(process.env.PORT)) ? Number(process.env.PORT) : 4000;
 // eslint-disable-next-line no-console
 console.log(`Server is running on http://localhost:${port.toString()}`);
 
