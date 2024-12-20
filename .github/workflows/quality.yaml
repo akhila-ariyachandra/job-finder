@@ -47,3 +47,5 @@ jobs:
         run: pnpm install
       - name: Check formatting with Prettier
         run: pnpm run prettier:check
+      - name: Check for linting errors
+        run: pnpm run lint
