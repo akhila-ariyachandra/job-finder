@@ -18,7 +18,9 @@ const SignInPage = () => {
         action={async () => {
           "use server";
 
-          await signIn("github");
+          await signIn("github", {
+            redirectTo: "/",
+          });
         }}
       >
         <Button type="submit" variant="outline" className="w-full">

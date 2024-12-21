@@ -1,5 +1,7 @@
-import { buttonVariants } from "@/components/ui/button";
+import { auth, signOut } from "@/auth";
+import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
+import { Suspense } from "react";
 
 const Header = () => {
   return (
@@ -9,12 +11,36 @@ const Header = () => {
           Job Finder
         </Link>
 
-        <Link href="/sign-in" className={buttonVariants()}>
-          Sign In
-        </Link>
+        <Suspense>
+          <ProfileSection />
+        </Suspense>
       </div>
     </header>
   );
 };
 
 export default Header;
+
+const ProfileSection = async () => {
+  const session = await auth();
+
+  if (session) {
+    return (
+      <form
+        action={async () => {
+          "use server";
+
+          await signOut();
+        }}
+      >
+        <Button type="submit">Sign Out</Button>
+      </form>
+    );
+  }
+
+  return (
+    <Link href="/sign-in" className={buttonVariants()}>
+      Sign In
+    </Link>
+  );
+};
