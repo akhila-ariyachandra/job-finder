@@ -85,7 +85,6 @@ const eslintConfig = tseslint.config(
   {
     extends: [react.configs["recommended-type-checked"]],
     rules: {
-      "@eslint-react/prefer-read-only-props": "error",
       "@eslint-react/hooks-extra/no-unnecessary-use-callback": "error",
       "@eslint-react/hooks-extra/no-unnecessary-use-memo": "error",
       "@eslint-react/naming-convention/filename": [

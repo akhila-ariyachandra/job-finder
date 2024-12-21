@@ -46,7 +46,7 @@ const Button = ({
   size,
   asChild = false,
   ...props
-}: Readonly<ButtonProps & { ref: React.RefObject<HTMLButtonElement> }>) => {
+}: ButtonProps & { ref?: React.RefObject<HTMLButtonElement> }) => {
   const Comp = asChild ? Slot : "button";
 
   return (
