@@ -1,7 +1,6 @@
-import { signIn } from "@/auth";
 import GitHub from "@/components/icons/github";
-import { Button } from "@/components/ui/button";
 import type { Metadata } from "next";
+import ProviderSignInButton from "./provider-sign-in-button";
 
 export const metadata: Metadata = {
   title: "Sign In",
@@ -14,21 +13,11 @@ const SignInPage = () => {
         Sign In to Job Finder
       </h1>
 
-      <form
-        action={async () => {
-          "use server";
+      <ProviderSignInButton provider="github">
+        <GitHub width={16} height={16} />
 
-          await signIn("github", {
-            redirectTo: "/",
-          });
-        }}
-      >
-        <Button type="submit" variant="outline" className="w-full">
-          <GitHub width={16} height={16} />
-
-          <span>Continue with GitHub</span>
-        </Button>
-      </form>
+        <span>Continue with GitHub</span>
+      </ProviderSignInButton>
     </div>
   );
 };
