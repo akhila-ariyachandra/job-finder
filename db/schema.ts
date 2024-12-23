@@ -1,6 +1,9 @@
+import { createId } from "@paralleldrive/cuid2";
 import {
   boolean,
+  index,
   integer,
+  pgEnum,
   pgTable,
   primaryKey,
   text,
@@ -85,5 +88,42 @@ export const authenticators = pgTable(
     compositePK: primaryKey({
       columns: [authenticator.userId, authenticator.credentialID],
     }),
+  }),
+);
+
+export const organizations = pgTable("organization", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  createdBy: text("createdBy")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  name: text("name").notNull(),
+});
+
+export const organizationRolesEnum = pgEnum("organizationRoles", [
+  "user",
+  "admin",
+]);
+
+// eslint-disable-next-line @typescript-eslint/no-deprecated
+export const organizationMembers = pgTable(
+  "organizationMember",
+  {
+    organizationId: text("organizationId")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    role: organizationRolesEnum().notNull(),
+  },
+  (organizationMember) => ({
+    compositePK: primaryKey({
+      columns: [organizationMember.organizationId, organizationMember.userId],
+    }),
+    organizationMembersIdx: index("organizationMembersIdx").on(
+      organizationMember.organizationId,
+    ),
   }),
 );
