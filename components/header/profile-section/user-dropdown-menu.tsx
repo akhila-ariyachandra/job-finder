@@ -25,7 +25,7 @@ const UserDropdownMenu = ({ user }: { user: User }) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger disabled={isPending}>
         {user.image ? (
           <Image
             src={user.image}
