@@ -12,14 +12,14 @@ import { CircleUserRound } from "lucide-react";
 import type { User } from "next-auth";
 import Image from "next/image";
 import { useTransition } from "react";
-import { signOut as signOutAction } from "./actions";
+import { logout as logoutAction } from "./actions";
 
 const UserDropdownMenu = ({ user }: { user: User }) => {
   const [isPending, startTransition] = useTransition();
 
-  const signOut = () => {
+  const logout = () => {
     startTransition(async () => {
-      await signOutAction();
+      await logoutAction();
     });
   };
 
@@ -52,8 +52,8 @@ const UserDropdownMenu = ({ user }: { user: User }) => {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem onClick={signOut} disabled={isPending}>
-          Sign Out
+        <DropdownMenuItem onClick={logout} disabled={isPending}>
+          Logout
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

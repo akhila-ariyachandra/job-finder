@@ -1,14 +1,14 @@
 "use server";
 
-import { signIn as signInPrimitive } from "@/auth";
+import { signIn } from "@/auth";
 import { z } from "zod";
 
 const providersSchema = z.enum(["github"]);
 
-export const signIn = async (prevState: undefined, formData: FormData) => {
+export const login = async (prevState: undefined, formData: FormData) => {
   const provider = await providersSchema.parseAsync(formData.get("provider"));
 
-  await signInPrimitive(provider, {
+  await signIn(provider, {
     redirectTo: "/",
   });
 

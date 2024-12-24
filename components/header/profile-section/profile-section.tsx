@@ -22,8 +22,8 @@ const ProfileSectionAuth = async () => {
   }
 
   return (
-    <Link href="/sign-in" className={buttonVariants()}>
-      Sign In
+    <Link href="/login" className={buttonVariants()}>
+      Login
     </Link>
   );
 };
