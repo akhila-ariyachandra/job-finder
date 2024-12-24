@@ -6,7 +6,7 @@ import UserDropdownMenu from "./user-dropdown-menu";
 
 const ProfileSection = () => {
   return (
-    <Suspense>
+    <Suspense fallback={<div className="invisible size-9" />}>
       <ProfileSectionAuth />
     </Suspense>
   );
