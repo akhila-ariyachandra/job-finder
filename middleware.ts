@@ -5,7 +5,9 @@ const PUBLIC_ONLY_PAGES = ["/login"];
 
 export const middleware = auth((request) => {
   if (
-    PUBLIC_ONLY_PAGES.includes(request.nextUrl.pathname) &&
+    PUBLIC_ONLY_PAGES.some((page) =>
+      request.nextUrl.pathname.startsWith(page),
+    ) &&
     request.auth?.user?.id
   ) {
     return NextResponse.redirect(new URL("/", request.url));

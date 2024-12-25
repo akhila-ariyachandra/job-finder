@@ -3,6 +3,7 @@
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -46,23 +47,34 @@ const UserDropdownMenuContent = ({ user }: { user?: User | null }) => {
       <DropdownMenuContent>
         <DropdownMenuLabel>{user?.name ?? "My Account"}</DropdownMenuLabel>
 
-        <DropdownMenuSeparator />
-
-        <DropdownMenuItem>Profile</DropdownMenuItem>
-        <DropdownMenuItem>Billing</DropdownMenuItem>
-        <DropdownMenuItem>Team</DropdownMenuItem>
-        <DropdownMenuItem>Subscription</DropdownMenuItem>
-
-        <DropdownMenuSeparator />
-
         {user ? (
-          <DropdownMenuItem onClick={logout} disabled={isPending}>
-            Logout
-          </DropdownMenuItem>
+          <>
+            <DropdownMenuSeparator />
+
+            <DropdownMenuGroup>
+              <DropdownMenuItem asChild>
+                <Link href="/account/profile">Profile</Link>
+              </DropdownMenuItem>
+
+              <DropdownMenuItem asChild>
+                <Link href="/account/organizations">Organizations</Link>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem onClick={logout} disabled={isPending}>
+              Logout
+            </DropdownMenuItem>
+          </>
         ) : (
-          <DropdownMenuItem asChild>
-            <Link href="/login">Login</Link>
-          </DropdownMenuItem>
+          <>
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem asChild>
+              <Link href="/login">Login</Link>
+            </DropdownMenuItem>
+          </>
         )}
       </DropdownMenuContent>
     </DropdownMenu>

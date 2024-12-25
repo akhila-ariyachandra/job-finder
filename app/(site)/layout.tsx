@@ -6,7 +6,7 @@ const SiteLayout = ({ children }: { children: ReactNode }) => {
     <>
       <Header />
 
-      <main>{children}</main>
+      {children}
     </>
   );
 };
