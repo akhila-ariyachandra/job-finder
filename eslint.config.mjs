@@ -38,7 +38,7 @@ const eslintConfig = tseslint.config(
       },
     },
     rules: {
-      "@typescript-eslint/consistent-type-imports": "error",
+      "@typescript-eslint/consistent-type-definitions": ["error", "type"],
     },
   },
   compat.config({

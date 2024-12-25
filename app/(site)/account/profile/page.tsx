@@ -1,9 +1,17 @@
 import { protectPage } from "@/lib/server-utils";
+import ProfileSettingsForm from "./profile-settings-form";
 
 const AccountProfilePage = async () => {
-  await protectPage();
+  const { user } = await protectPage();
 
-  return null;
+  return (
+    <ProfileSettingsForm
+      initialProfile={{
+        avatar: user?.image ?? undefined,
+        name: user?.name ?? "",
+      }}
+    />
+  );
 };
 
 export default AccountProfilePage;
