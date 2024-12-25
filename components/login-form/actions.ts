@@ -5,7 +5,7 @@ import { z } from "zod";
 
 const providersSchema = z.enum(["github"]);
 
-export const login = async (prevState: undefined, formData: FormData) => {
+export const loginAction = async (prevState: undefined, formData: FormData) => {
   const provider = await providersSchema.parseAsync(formData.get("provider"));
 
   await signIn(provider, {

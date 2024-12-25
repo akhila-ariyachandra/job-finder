@@ -13,7 +13,7 @@ import type { User } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import { useTransition } from "react";
-import { logout as logoutAction } from "./actions";
+import { logoutAction } from "./actions";
 
 const UserDropdownMenuContent = ({ user }: { user?: User | null }) => {
   const [isPending, startTransition] = useTransition();

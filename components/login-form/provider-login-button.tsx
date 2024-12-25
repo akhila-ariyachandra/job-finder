@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { LoaderCircle } from "lucide-react";
 import { type ReactNode, useActionState } from "react";
-import { login } from "./actions";
+import { loginAction } from "./actions";
 
 const ProviderLoginButton = ({
   provider,
@@ -12,7 +12,7 @@ const ProviderLoginButton = ({
   provider: "github";
   children: ReactNode;
 }) => {
-  const [, formAction, isPending] = useActionState(login, undefined);
+  const [, formAction, isPending] = useActionState(loginAction, undefined);
 
   return (
     <form action={formAction}>
