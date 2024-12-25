@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Upload } from "lucide-react";
 import { useActionState, useOptimistic, useRef } from "react";
-import { updateProfileAction } from "./actions";
+import { updateName, updateProfilePicture } from "./actions";
 
 type Profile = {
   name: string;
@@ -19,8 +19,15 @@ const ProfileSettingsForm = ({
 }: {
   initialProfile: Profile;
 }) => {
-  const formRef = useRef<HTMLFormElement>(null);
-  const [state, formAction] = useActionState(updateProfileAction, {
+  const nameFormRef = useRef<HTMLFormElement>(null);
+  const avatarFormRef = useRef<HTMLFormElement>(null);
+
+  const [nameState, nameAction] = useActionState(updateName, {
+    message: "",
+    error: undefined,
+  });
+
+  const [avatarState, avatarAction] = useActionState(updateProfilePicture, {
     message: "",
     error: undefined,
   });
@@ -30,13 +37,14 @@ const ProfileSettingsForm = ({
     (state, newProfile: Partial<Profile>) => ({ ...state, ...newProfile }),
   );
 
-  const handleSubmit = (formData: FormData) => {
+  const handleNameSubmit = (formData: FormData) => {
     const name = formData.get("name") as string;
-    const avatarFile = formData.get("avatar") as File;
-
-    // Create an optimistic update
     setOptimisticProfile({ name });
+    nameAction(formData);
+  };
 
+  const handleAvatarSubmit = (formData: FormData) => {
+    const avatarFile = formData.get("avatar") as File;
     if (avatarFile.size > 0) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -44,9 +52,7 @@ const ProfileSettingsForm = ({
       };
       reader.readAsDataURL(avatarFile);
     }
-
-    // Call the server action
-    formAction(formData);
+    avatarAction(formData);
   };
 
   return (
@@ -54,8 +60,12 @@ const ProfileSettingsForm = ({
       <CardHeader>
         <CardTitle>Profile Settings</CardTitle>
       </CardHeader>
-      <CardContent>
-        <form ref={formRef} action={handleSubmit} className="space-y-6">
+      <CardContent className="space-y-6">
+        <form
+          ref={avatarFormRef}
+          action={handleAvatarSubmit}
+          className="space-y-4"
+        >
           <div className="flex flex-col items-center space-y-4">
             <Avatar className="h-24 w-24">
               <AvatarImage
@@ -78,13 +88,8 @@ const ProfileSettingsForm = ({
                 accept="image/*"
                 className="hidden"
                 onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) {
-                    const reader = new FileReader();
-                    reader.onloadend = () => {
-                      setOptimisticProfile({ avatar: reader.result as string });
-                    };
-                    reader.readAsDataURL(file);
+                  if (e.target.files?.[0]) {
+                    avatarFormRef.current?.requestSubmit();
                   }
                 }}
               />
@@ -96,6 +101,15 @@ const ProfileSettingsForm = ({
               </Label>
             </div>
           </div>
+          {avatarState.error && (
+            <p className="mt-2 text-sm text-red-500">{avatarState.error}</p>
+          )}
+          {avatarState.message && (
+            <p className="mt-2 text-sm text-green-500">{avatarState.message}</p>
+          )}
+        </form>
+
+        <form ref={nameFormRef} action={handleNameSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="name">Name</Label>
             <Input
@@ -109,13 +123,13 @@ const ProfileSettingsForm = ({
             />
           </div>
           <Button type="submit" className="w-full">
-            Save Changes
+            Save Name
           </Button>
-          {state.error && (
-            <p className="mt-2 text-sm text-red-500">{state.error}</p>
+          {nameState.error && (
+            <p className="mt-2 text-sm text-red-500">{nameState.error}</p>
           )}
-          {state.message && (
-            <p className="mt-2 text-sm text-green-500">{state.message}</p>
+          {nameState.message && (
+            <p className="mt-2 text-sm text-green-500">{nameState.message}</p>
           )}
         </form>
       </CardContent>
