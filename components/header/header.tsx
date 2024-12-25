@@ -1,7 +1,6 @@
 import { SITE_TITLE } from "@/lib/constants";
 import Link from "next/link";
-import { Suspense } from "react";
-import ProfileSection from "./profile-section";
+import UserDropdownMenu from "./user-dropdown-menu";
 
 const Header = () => {
   return (
@@ -11,9 +10,7 @@ const Header = () => {
           {SITE_TITLE}
         </Link>
 
-        <Suspense>
-          <ProfileSection />
-        </Suspense>
+        <UserDropdownMenu />
       </div>
     </header>
   );

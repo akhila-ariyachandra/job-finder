@@ -11,10 +11,11 @@ import {
 import { CircleUserRound } from "lucide-react";
 import type { User } from "next-auth";
 import Image from "next/image";
+import Link from "next/link";
 import { useTransition } from "react";
 import { logout as logoutAction } from "./actions";
 
-const UserDropdownMenu = ({ user }: { user: User }) => {
+const UserDropdownMenuContent = ({ user }: { user?: User | null }) => {
   const [isPending, startTransition] = useTransition();
 
   const logout = () => {
@@ -26,7 +27,7 @@ const UserDropdownMenu = ({ user }: { user: User }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger disabled={isPending}>
-        {user.image ? (
+        {user?.image ? (
           <Image
             src={user.image}
             alt={user.name ?? "User profile picture"}
@@ -36,15 +37,17 @@ const UserDropdownMenu = ({ user }: { user: User }) => {
             className="rounded-full"
           />
         ) : (
-          <CircleUserRound size={36} />
+          <CircleUserRound size={36} strokeWidth={1} />
         )}
 
         <span className="sr-only">Open user dropdown</span>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent>
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>{user?.name ?? "My Account"}</DropdownMenuLabel>
+
         <DropdownMenuSeparator />
+
         <DropdownMenuItem>Profile</DropdownMenuItem>
         <DropdownMenuItem>Billing</DropdownMenuItem>
         <DropdownMenuItem>Team</DropdownMenuItem>
@@ -52,12 +55,18 @@ const UserDropdownMenu = ({ user }: { user: User }) => {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem onClick={logout} disabled={isPending}>
-          Logout
-        </DropdownMenuItem>
+        {user ? (
+          <DropdownMenuItem onClick={logout} disabled={isPending}>
+            Logout
+          </DropdownMenuItem>
+        ) : (
+          <DropdownMenuItem asChild>
+            <Link href="/login">Login</Link>
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
 };
 
-export default UserDropdownMenu;
+export default UserDropdownMenuContent;
