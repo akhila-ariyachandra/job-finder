@@ -74,6 +74,9 @@ const eslintConfig = tseslint.config(
     },
   },
   compat.config({
+    extends: ["plugin:drizzle/recommended"],
+  }),
+  compat.config({
     extends: ["next/core-web-vitals"],
   }),
   compat.config({
