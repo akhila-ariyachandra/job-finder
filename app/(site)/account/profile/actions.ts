@@ -49,3 +49,8 @@ export const updateNameAction = async (
 
   return { name: result.data.name, message: "Name updated successfully!" };
 };
+
+// eslint-disable-next-line @typescript-eslint/require-await
+export const afterUploadProfileImageAction = async () => {
+  revalidatePath("/account/profile");
+};

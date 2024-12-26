@@ -2,7 +2,6 @@ import { auth } from "@/auth";
 import { db } from "@/db";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 
@@ -19,6 +18,9 @@ export const ourFileRouter = {
        */
       maxFileSize: "2MB",
       maxFileCount: 1,
+      additionalProperties: {
+        awaitServerData: true,
+      },
     },
   })
     // Set permissions and file types for this FileRoute
@@ -41,8 +43,6 @@ export const ourFileRouter = {
         .update(users)
         .set({ image: file.url })
         .where(eq(users.id, metadata.userId));
-
-      revalidatePath("/", "layout");
 
       // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
       return { uploadedBy: metadata.userId };

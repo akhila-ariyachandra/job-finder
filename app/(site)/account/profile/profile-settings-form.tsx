@@ -6,8 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { UploadButton } from "@/lib/uploadthing";
-import { useActionState } from "react";
-import { updateNameAction } from "./actions";
+import { useActionState, useTransition } from "react";
+import { afterUploadProfileImageAction, updateNameAction } from "./actions";
 
 type Profile = {
   name: string;
@@ -19,6 +19,8 @@ const ProfileSettingsForm = ({
 }: {
   initialProfile: Profile;
 }) => {
+  const [isPending, startTransition] = useTransition();
+
   const [nameState, nameAction] = useActionState(updateNameAction, {
     message: "",
     name: initialProfile.name,
@@ -42,7 +44,13 @@ const ProfileSettingsForm = ({
             </AvatarFallback>
           </Avatar>
 
-          <UploadButton endpoint="imageUploader" />
+          <UploadButton
+            endpoint="imageUploader"
+            onClientUploadComplete={() => {
+              startTransition(afterUploadProfileImageAction);
+            }}
+            disabled={isPending}
+          />
         </div>
 
         <form action={nameAction} className="space-y-4">
