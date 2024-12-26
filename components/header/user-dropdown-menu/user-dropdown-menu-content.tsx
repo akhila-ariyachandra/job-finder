@@ -35,7 +35,7 @@ const UserDropdownMenuContent = ({ user }: { user?: User | null }) => {
             width={36}
             height={36}
             unoptimized
-            className="rounded-full"
+            className="size-9 rounded-full object-cover"
           />
         ) : (
           <CircleUserRound size={36} strokeWidth={1} />

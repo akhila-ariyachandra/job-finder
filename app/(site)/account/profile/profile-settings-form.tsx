@@ -34,7 +34,11 @@ const ProfileSettingsForm = ({
       <CardContent className="space-y-6">
         <div className="flex flex-col items-center space-y-4">
           <Avatar className="h-24 w-24">
-            <AvatarImage src={initialProfile.avatar} alt="Profile picture" />
+            <AvatarImage
+              src={initialProfile.avatar}
+              alt="Profile picture"
+              className="object-cover"
+            />
             <AvatarFallback>
               {initialProfile.name
                 .split(" ")
