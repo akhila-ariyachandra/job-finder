@@ -1,8 +1,4 @@
-import { protectResource } from "@/lib/server-utils";
-
-const AccountOrganizationsPage = async () => {
-  await protectResource();
-
+const AccountOrganizationsPage = () => {
   return null;
 };
 
