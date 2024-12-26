@@ -1,7 +1,11 @@
+import { ourFileRouter } from "@/app/api/uploadthing/core";
 import { SITE_TITLE } from "@/lib/constants";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import type { ReactNode } from "react";
+import { connection } from "next/server";
+import { Suspense, type ReactNode } from "react";
+import { extractRouterConfig } from "uploadthing/server";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -28,6 +32,10 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Suspense>
+          <UploadThingSSR />
+        </Suspense>
+
         {children}
       </body>
     </html>
@@ -35,3 +43,19 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
 };
 
 export default RootLayout;
+
+const UploadThingSSR = async () => {
+  await connection();
+
+  return (
+    <NextSSRPlugin
+      /**
+       * The `extractRouterConfig` will extract **only** the route configs
+       * from the router to prevent additional information from being
+       * leaked to the client. The data passed to the client is the same
+       * as if you were to fetch `/api/uploadthing` directly.
+       */
+      routerConfig={extractRouterConfig(ourFileRouter)}
+    />
+  );
+};

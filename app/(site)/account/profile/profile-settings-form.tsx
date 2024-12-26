@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Upload } from "lucide-react";
-import { useActionState, useRef } from "react";
+import { UploadButton } from "@/lib/uploadthing";
+import { useActionState } from "react";
 import { updateNameAction } from "./actions";
 
 type Profile = {
@@ -19,9 +19,6 @@ const ProfileSettingsForm = ({
 }: {
   initialProfile: Profile;
 }) => {
-  const nameFormRef = useRef<HTMLFormElement>(null);
-  const avatarFormRef = useRef<HTMLFormElement>(null);
-
   const [nameState, nameAction] = useActionState(updateNameAction, {
     message: "",
     name: initialProfile.name,
@@ -33,48 +30,22 @@ const ProfileSettingsForm = ({
         <CardTitle>Profile Settings</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        <form ref={avatarFormRef} className="space-y-4">
-          <div className="flex flex-col items-center space-y-4">
-            <Avatar className="h-24 w-24">
-              <AvatarImage src={initialProfile.avatar} alt="Profile picture" />
-              <AvatarFallback>
-                {initialProfile.name
-                  .split(" ")
-                  .map((n) => n[0])
-                  .join("")
-                  .toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex items-center space-x-2">
-              <Input
-                id="avatar"
-                name="avatar"
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={(e) => {
-                  if (e.target.files?.[0]) {
-                    avatarFormRef.current?.requestSubmit();
-                  }
-                }}
-              />
-              <Label htmlFor="avatar" className="cursor-pointer">
-                <div className="flex items-center space-x-2 rounded-md bg-slate-100 px-3 py-2 text-slate-700 transition-colors hover:bg-slate-200">
-                  <Upload size={16} />
-                  <span>Upload new picture</span>
-                </div>
-              </Label>
-            </div>
-          </div>
-          {/* {avatarState.error && (
-            <p className="mt-2 text-sm text-red-500">{avatarState.error}</p>
-          )}
-          {avatarState.message && (
-            <p className="mt-2 text-sm text-green-500">{avatarState.message}</p>
-          )} */}
-        </form>
+        <div className="flex flex-col items-center space-y-4">
+          <Avatar className="h-24 w-24">
+            <AvatarImage src={initialProfile.avatar} alt="Profile picture" />
+            <AvatarFallback>
+              {initialProfile.name
+                .split(" ")
+                .map((n) => n[0])
+                .join("")
+                .toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
 
-        <form ref={nameFormRef} action={nameAction} className="space-y-4">
+          <UploadButton endpoint="imageUploader" />
+        </div>
+
+        <form action={nameAction} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="name">Name</Label>
             <Input
