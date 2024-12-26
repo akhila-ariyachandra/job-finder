@@ -1,55 +1,51 @@
 "use server";
 
+import { db } from "@/db";
+import { users } from "@/db/schema";
+import { protectResource } from "@/lib/server-utils";
+import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 
-export const updateName = async (
-  prevState:
-    | { message: string; error: undefined }
-    | { message: undefined; error: string },
+const nameSchema = z.object({
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters long")
+    .max(50, "Name must be at most 50 characters long"),
+});
+
+type UpdateNameState = { name: string; message?: string; error?: string };
+export const updateNameAction = async (
+  prevState: UpdateNameState,
   formData: FormData,
-) => {
-  // Simulate a delay
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+): Promise<UpdateNameState> => {
+  const user = await protectResource();
 
-  const name = formData.get("name") as string;
+  const result = await nameSchema.safeParseAsync({
+    name: formData.get("name"),
+  });
 
-  // Simulating an error condition (1 in 4 chance)
-  if (Math.random() < 0.25) {
-    return { error: "Failed to update name. Please try again." };
+  if (!result.success) {
+    return {
+      name: formData.get("name") as string,
+      error: result.error.flatten().formErrors.toString(),
+    };
   }
 
-  // Simulating a successful update
-  // eslint-disable-next-line no-console
-  console.log("Name updated:", name);
-
-  // Revalidate the page to reflect the changes
-  revalidatePath("/");
-
-  return { message: "Name updated successfully!" };
-};
-
-export const updateProfilePicture = async (
-  prevState:
-    | { message: string; error: undefined }
-    | { message: undefined; error: string },
-  formData: FormData,
-) => {
-  // Simulate a delay
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  const avatar = formData.get("avatar") as File;
-
-  // Simulating an error condition (1 in 4 chance)
-  if (Math.random() < 0.25) {
-    return { error: "Failed to update profile picture. Please try again." };
+  if (!user.id) {
+    return {
+      name: result.data.name,
+      error: "Unexpected error try again",
+    };
   }
 
-  // Simulating a successful update
-  // eslint-disable-next-line no-console
-  console.log("Profile picture updated:", avatar.name);
+  await db
+    .update(users)
+    .set({ name: result.data.name })
+    .where(eq(users.id, user.id));
 
   // Revalidate the page to reflect the changes
-  revalidatePath("/");
+  revalidatePath("/account/profile");
 
-  return { message: "Profile picture updated successfully!" };
+  return { name: result.data.name, message: "Name updated successfully!" };
 };

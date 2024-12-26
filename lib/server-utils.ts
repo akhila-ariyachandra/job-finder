@@ -3,15 +3,15 @@ import { unauthorized } from "next/navigation";
 import "server-only";
 
 /**
- * Protects a page from unauthorized access and returns
- * the current session if the user is authenticated.
+ * Protects a resource from unauthorized access and returns
+ * the current user if they are authenticated.
  */
-export const protectPage = async () => {
+export const protectResource = async () => {
   const session = await auth();
 
-  if (!session) {
+  if (!session?.user) {
     unauthorized();
   }
 
-  return session;
+  return session.user;
 };

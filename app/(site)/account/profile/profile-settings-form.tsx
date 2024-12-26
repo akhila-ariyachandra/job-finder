@@ -6,8 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Upload } from "lucide-react";
-import { useActionState, useOptimistic, useRef } from "react";
-import { updateName, updateProfilePicture } from "./actions";
+import { useActionState, useRef } from "react";
+import { updateNameAction } from "./actions";
 
 type Profile = {
   name: string;
@@ -22,38 +22,10 @@ const ProfileSettingsForm = ({
   const nameFormRef = useRef<HTMLFormElement>(null);
   const avatarFormRef = useRef<HTMLFormElement>(null);
 
-  const [nameState, nameAction] = useActionState(updateName, {
+  const [nameState, nameAction] = useActionState(updateNameAction, {
     message: "",
-    error: undefined,
+    name: initialProfile.name,
   });
-
-  const [avatarState, avatarAction] = useActionState(updateProfilePicture, {
-    message: "",
-    error: undefined,
-  });
-
-  const [optimisticProfile, setOptimisticProfile] = useOptimistic(
-    initialProfile,
-    (state, newProfile: Partial<Profile>) => ({ ...state, ...newProfile }),
-  );
-
-  const handleNameSubmit = (formData: FormData) => {
-    const name = formData.get("name") as string;
-    setOptimisticProfile({ name });
-    nameAction(formData);
-  };
-
-  const handleAvatarSubmit = (formData: FormData) => {
-    const avatarFile = formData.get("avatar") as File;
-    if (avatarFile.size > 0) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setOptimisticProfile({ avatar: reader.result as string });
-      };
-      reader.readAsDataURL(avatarFile);
-    }
-    avatarAction(formData);
-  };
 
   return (
     <Card className="mx-auto w-full max-w-md">
@@ -61,19 +33,12 @@ const ProfileSettingsForm = ({
         <CardTitle>Profile Settings</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        <form
-          ref={avatarFormRef}
-          action={handleAvatarSubmit}
-          className="space-y-4"
-        >
+        <form ref={avatarFormRef} className="space-y-4">
           <div className="flex flex-col items-center space-y-4">
             <Avatar className="h-24 w-24">
-              <AvatarImage
-                src={optimisticProfile.avatar}
-                alt="Profile picture"
-              />
+              <AvatarImage src={initialProfile.avatar} alt="Profile picture" />
               <AvatarFallback>
-                {optimisticProfile.name
+                {initialProfile.name
                   .split(" ")
                   .map((n) => n[0])
                   .join("")
@@ -101,30 +66,33 @@ const ProfileSettingsForm = ({
               </Label>
             </div>
           </div>
-          {avatarState.error && (
+          {/* {avatarState.error && (
             <p className="mt-2 text-sm text-red-500">{avatarState.error}</p>
           )}
           {avatarState.message && (
             <p className="mt-2 text-sm text-green-500">{avatarState.message}</p>
-          )}
+          )} */}
         </form>
 
-        <form ref={nameFormRef} action={handleNameSubmit} className="space-y-4">
+        <form ref={nameFormRef} action={nameAction} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="name">Name</Label>
             <Input
               id="name"
               name="name"
               placeholder="Enter your name"
-              value={optimisticProfile.name}
-              onChange={(e) => {
-                setOptimisticProfile({ name: e.target.value });
-              }}
+              defaultValue={nameState.name}
+              type="text"
+              required
+              minLength={6}
+              autoComplete="name"
             />
           </div>
+
           <Button type="submit" className="w-full">
             Save Name
           </Button>
+
           {nameState.error && (
             <p className="mt-2 text-sm text-red-500">{nameState.error}</p>
           )}

@@ -1,7 +1,7 @@
-import { protectPage } from "@/lib/server-utils";
+import { protectResource } from "@/lib/server-utils";
 
 const AccountOrganizationsPage = async () => {
-  await protectPage();
+  await protectResource();
 
   return null;
 };
