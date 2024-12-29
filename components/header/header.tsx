@@ -1,6 +1,6 @@
 import { SITE_TITLE } from "@/lib/constants";
 import Link from "next/link";
-import UserDropdownMenu from "./user-dropdown-menu";
+import UserMenu from "./user-menu";
 
 const Header = () => {
   return (
@@ -10,7 +10,7 @@ const Header = () => {
           {SITE_TITLE}
         </Link>
 
-        <UserDropdownMenu />
+        <UserMenu />
       </div>
     </header>
   );

@@ -16,7 +16,7 @@ import Link from "next/link";
 import { useTransition } from "react";
 import { logoutAction } from "./actions";
 
-const UserDropdownMenuContent = ({ user }: { user?: User | null }) => {
+const UserMenuContent = ({ user }: { user?: User | null }) => {
   const [isPending, startTransition] = useTransition();
 
   const logout = () => {
@@ -44,7 +44,7 @@ const UserDropdownMenuContent = ({ user }: { user?: User | null }) => {
         <span className="sr-only">Open user dropdown</span>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent>
+      <DropdownMenuContent align="end">
         <DropdownMenuLabel>{user?.name ?? "My Account"}</DropdownMenuLabel>
 
         {user ? (
@@ -81,4 +81,4 @@ const UserDropdownMenuContent = ({ user }: { user?: User | null }) => {
   );
 };
 
-export default UserDropdownMenuContent;
+export default UserMenuContent;
