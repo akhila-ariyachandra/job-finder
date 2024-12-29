@@ -39,6 +39,12 @@ const eslintConfig = tseslint.config(
     },
     rules: {
       "@typescript-eslint/consistent-type-definitions": ["error", "type"],
+      "@typescript-eslint/restrict-template-expressions": [
+        "error",
+        {
+          allowNumber: true,
+        },
+      ],
     },
   },
   compat.config({
