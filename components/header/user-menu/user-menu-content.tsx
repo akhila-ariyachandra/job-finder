@@ -53,11 +53,11 @@ const UserMenuContent = ({ user }: { user?: User | null }) => {
 
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
-                <Link href="/account/profile">Profile</Link>
+                <Link href="/settings/profile">Profile</Link>
               </DropdownMenuItem>
 
               <DropdownMenuItem asChild>
-                <Link href="/account/organizations">Organizations</Link>
+                <Link href="/settings/organizations">Organizations</Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
 

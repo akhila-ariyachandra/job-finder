@@ -1,5 +1,6 @@
 import { ourFileRouter } from "@/app/api/uploadthing/core";
 import { SITE_TITLE } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -28,9 +29,13 @@ export const metadata: Metadata = {
 
 const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <html lang="en">
+    <html lang="en" className="h-full">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={cn(
+          geistSans.variable,
+          geistMono.variable,
+          "flex h-full flex-col items-stretch antialiased",
+        )}
       >
         <Suspense>
           <UploadThingSSR />
