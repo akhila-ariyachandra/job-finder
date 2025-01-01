@@ -21,7 +21,6 @@ export const users = pgTable("user", {
   image: text("image"),
 });
 
-// eslint-disable-next-line @typescript-eslint/no-deprecated
 export const accounts = pgTable(
   "account",
   {
@@ -39,11 +38,13 @@ export const accounts = pgTable(
     id_token: text("id_token"),
     session_state: text("session_state"),
   },
-  (account) => ({
-    compoundKey: primaryKey({
-      columns: [account.provider, account.providerAccountId],
-    }),
-  }),
+  (account) => [
+    {
+      compoundKey: primaryKey({
+        columns: [account.provider, account.providerAccountId],
+      }),
+    },
+  ],
 );
 
 export const sessions = pgTable("session", {
@@ -54,7 +55,6 @@ export const sessions = pgTable("session", {
   expires: timestamp("expires", { mode: "date" }).notNull(),
 });
 
-// eslint-disable-next-line @typescript-eslint/no-deprecated
 export const verificationTokens = pgTable(
   "verificationToken",
   {
@@ -62,14 +62,15 @@ export const verificationTokens = pgTable(
     token: text("token").notNull(),
     expires: timestamp("expires", { mode: "date" }).notNull(),
   },
-  (verificationToken) => ({
-    compositePk: primaryKey({
-      columns: [verificationToken.identifier, verificationToken.token],
-    }),
-  }),
+  (verificationToken) => [
+    {
+      compositePk: primaryKey({
+        columns: [verificationToken.identifier, verificationToken.token],
+      }),
+    },
+  ],
 );
 
-// eslint-disable-next-line @typescript-eslint/no-deprecated
 export const authenticators = pgTable(
   "authenticator",
   {
@@ -84,11 +85,13 @@ export const authenticators = pgTable(
     credentialBackedUp: boolean("credentialBackedUp").notNull(),
     transports: text("transports"),
   },
-  (authenticator) => ({
-    compositePK: primaryKey({
-      columns: [authenticator.userId, authenticator.credentialID],
-    }),
-  }),
+  (authenticator) => [
+    {
+      compositePK: primaryKey({
+        columns: [authenticator.userId, authenticator.credentialID],
+      }),
+    },
+  ],
 );
 
 export const organizations = pgTable("organization", {
@@ -106,7 +109,6 @@ export const organizationRolesEnum = pgEnum("organizationRoles", [
   "admin",
 ]);
 
-// eslint-disable-next-line @typescript-eslint/no-deprecated
 export const organizationMembers = pgTable(
   "organizationMember",
   {
@@ -118,12 +120,14 @@ export const organizationMembers = pgTable(
       .references(() => users.id, { onDelete: "cascade" }),
     role: organizationRolesEnum().notNull(),
   },
-  (organizationMember) => ({
-    compositePK: primaryKey({
-      columns: [organizationMember.organizationId, organizationMember.userId],
-    }),
-    organizationMembersIdx: index("organizationMembersIdx").on(
-      organizationMember.organizationId,
-    ),
-  }),
+  (organizationMember) => [
+    {
+      compositePK: primaryKey({
+        columns: [organizationMember.organizationId, organizationMember.userId],
+      }),
+      organizationMembersIdx: index("organizationMembersIdx").on(
+        organizationMember.organizationId,
+      ),
+    },
+  ],
 );
