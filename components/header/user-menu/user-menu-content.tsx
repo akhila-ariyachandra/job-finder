@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { disableImageOptimization } from "@/lib/utils";
 import { CircleUserRound } from "lucide-react";
 import type { User } from "next-auth";
 import Image from "next/image";
@@ -34,6 +35,8 @@ const UserMenuContent = ({ user }: { user?: User | null }) => {
             alt={user.name ?? "User profile picture"}
             width={36}
             height={36}
+            priority
+            unoptimized={disableImageOptimization(user.image)}
             className="size-9 rounded-full object-cover"
           />
         ) : (

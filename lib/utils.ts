@@ -4,3 +4,9 @@ import { twMerge } from "tailwind-merge";
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
+
+export const disableImageOptimization = (src: string) => {
+  const url = new URL(src);
+
+  return url.hostname !== "utfs.io";
+};
