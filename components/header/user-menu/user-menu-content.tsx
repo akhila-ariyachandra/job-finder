@@ -34,7 +34,6 @@ const UserMenuContent = ({ user }: { user?: User | null }) => {
             alt={user.name ?? "User profile picture"}
             width={36}
             height={36}
-            unoptimized
             className="size-9 rounded-full object-cover"
           />
         ) : (
