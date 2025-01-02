@@ -1,4 +1,5 @@
 import { ourFileRouter } from "@/app/api/uploadthing/core";
+import { Toaster } from "@/components/ui/toaster";
 import { SITE_TITLE } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
@@ -42,6 +43,8 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
         </Suspense>
 
         {children}
+
+        <Toaster />
       </body>
     </html>
   );

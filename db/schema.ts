@@ -102,6 +102,7 @@ export const organizations = pgTable("organization", {
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
+  image: text("image").notNull(),
 });
 
 export const organizationRolesEnum = pgEnum("organizationRoles", [
@@ -118,7 +119,7 @@ export const organizationMembers = pgTable(
     userId: text("userId")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
-    role: organizationRolesEnum().notNull(),
+    role: organizationRolesEnum().default("user").notNull(),
   },
   (organizationMember) => [
     {
