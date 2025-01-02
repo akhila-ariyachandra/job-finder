@@ -45,12 +45,12 @@ export const updateNameAction = async (
     .where(eq(users.id, user.id));
 
   // Revalidate the page to reflect the changes
-  revalidatePath("/account/profile");
+  revalidatePath("/settings/profile");
 
   return { name: result.data.name, message: "Name updated successfully!" };
 };
 
 // eslint-disable-next-line @typescript-eslint/require-await
 export const afterUploadProfileImageAction = async () => {
-  revalidatePath("/account/profile");
+  revalidatePath("/settings/profile");
 };
