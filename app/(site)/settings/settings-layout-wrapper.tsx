@@ -59,6 +59,11 @@ const SettingsLayoutWrapper = ({ children }: { children: ReactNode }) => {
                   key={item.href}
                   href={item.href}
                   className="flex items-center rounded-lg px-3 py-2 text-slate-900 hover:bg-slate-200 dark:text-slate-50 dark:hover:bg-slate-700"
+                  onClick={() => {
+                    if (sidebarOpen) {
+                      toggleSidebar();
+                    }
+                  }}
                 >
                   {item.label}
                 </Link>
