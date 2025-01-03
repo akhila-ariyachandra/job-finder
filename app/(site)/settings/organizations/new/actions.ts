@@ -4,6 +4,8 @@ import { db } from "@/db";
 import { organizationMembers, organizations } from "@/db/schema";
 import { MEDIA_URL } from "@/lib/constants";
 import { protectResource } from "@/lib/server-utils";
+import { ServerAction } from "@/lib/types";
+import { eq } from "drizzle-orm";
 import { redirect, RedirectType, unauthorized } from "next/navigation";
 import { z } from "zod";
 
@@ -11,23 +13,18 @@ const createOrganizationSchema = z.object({
   name: z.string(),
   logoUrl: z.string().url().startsWith(MEDIA_URL),
 });
-type CreateOrganizationSchemaErrors = z.inferFlattenedErrors<
-  typeof createOrganizationSchema
->["fieldErrors"];
 
-type CreateOrganizationActionState =
+export const createOrganizationAction: ServerAction<
   | undefined
   | {
-      errors: CreateOrganizationSchemaErrors;
+      errors: z.inferFlattenedErrors<
+        typeof createOrganizationSchema
+      >["fieldErrors"];
     }
   | {
-      error: string;
-    };
-
-export const createOrganizationAction = async (
-  previousState: CreateOrganizationActionState,
-  formData: FormData,
-): Promise<CreateOrganizationActionState> => {
+      error: "Failed to create organization";
+    }
+> = async (previousState, formData) => {
   const user = await protectResource();
 
   const validatedFields = await createOrganizationSchema.safeParseAsync({
@@ -48,8 +45,11 @@ export const createOrganizationAction = async (
     unauthorized();
   }
 
-  const organizationId = await db.transaction(async (tx) => {
-    const results = await tx
+  let organizationId: string | undefined = undefined;
+
+  // Create the organization
+  try {
+    const insertResults = await db
       .insert(organizations)
       .values({
         name: validatedFields.data.name,
@@ -58,22 +58,31 @@ export const createOrganizationAction = async (
       })
       .returning({ id: organizations.id });
 
-    const result = results[0];
+    organizationId = insertResults[0]?.id;
+  } catch {
+    return {
+      error: "Failed to create organization",
+    };
+  }
 
-    if (!result) {
-      return tx.rollback();
-    }
+  // If the organization was not created, return early
+  if (!organizationId) {
+    return {
+      error: "Failed to create organization",
+    };
+  }
 
-    await tx.insert(organizationMembers).values({
-      organizationId: result.id,
+  // Add the user as an admin of the organization
+  try {
+    await db.insert(organizationMembers).values({
+      organizationId,
       userId,
       role: "admin",
     });
+  } catch {
+    // If this fails, delete the organization and return early
+    await db.delete(organizations).where(eq(organizations.id, organizationId));
 
-    return result.id;
-  });
-
-  if (!organizationId) {
     return {
       error: "Failed to create organization",
     };

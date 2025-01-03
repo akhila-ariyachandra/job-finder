@@ -3,6 +3,7 @@
 import { db } from "@/db";
 import { users } from "@/db/schema";
 import { protectResource } from "@/lib/server-utils";
+import { ServerAction } from "@/lib/types";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -14,11 +15,11 @@ const nameSchema = z.object({
     .max(50, "Name must be at most 50 characters long"),
 });
 
-type UpdateNameState = { name: string; message?: string; error?: string };
-export const updateNameAction = async (
-  prevState: UpdateNameState,
-  formData: FormData,
-): Promise<UpdateNameState> => {
+export const updateNameAction: ServerAction<{
+  name: string;
+  message?: string;
+  error?: string;
+}> = async (prevState, formData) => {
   const user = await protectResource();
 
   const result = await nameSchema.safeParseAsync({
