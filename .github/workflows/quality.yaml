@@ -9,43 +9,18 @@ jobs:
   quality:
     name: Code Quality Checks
     runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        node-version: [20]
     steps:
       - name: Check out code
         uses: actions/checkout@v4
         with:
           fetch-depth: 2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          run_install: false
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-      - uses: actions/cache@v4
-        name: Setup pnpm cache
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-      - uses: actions/cache@v4
-        name: Setup Prettier cache
-        with:
-          path: .prettier/cache
-          key: ${{ runner.os }}-prettier-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-prettier-
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
       - name: Install dependencies
-        run: pnpm install
+        run: bun install
+      - name: Check formatting
+        run: bun run prettier:check
       - name: Check formatting with Prettier
-        run: pnpm run prettier:check
+        run: bun run prettier:check
       - name: Check for linting errors
-        run: pnpm run lint
+        run: bun run lint
